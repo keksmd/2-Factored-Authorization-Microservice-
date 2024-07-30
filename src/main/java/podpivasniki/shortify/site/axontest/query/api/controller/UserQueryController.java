@@ -1,27 +1,27 @@
 package podpivasniki.shortify.site.axontest.query.api.controller;
 
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import podpivasniki.shortify.site.axontest.axon.module.dto.UserDTO;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import podpivasniki.shortify.site.axontest.axon.module.queries.UserGetByNameQuery;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1/users/")
 public class UserQueryController {
-    private  final QueryGateway commandGateway;
+    private  final QueryGateway queryGateway;
 
-    public UserQueryController(QueryGateway commandGateway) {
-        this.commandGateway = commandGateway;
+    public UserQueryController(QueryGateway queryGateway) {
+        this.queryGateway = queryGateway;
     }
 
-    @GetMapping("/user/name")
-    public UserDTO getUserByName(@AuthenticationPrincipal Jwt jwt, String name) {
-        UserGetByNameQuery userGetByNameQuery = UserGetByNameQuery.builder().login(name).build();
-        return commandGateway.query(userGetByNameQuery, UserDTO.class).join();
+    @GetMapping("/name/{name}")
+    public UserDTO getUserByName(@AuthenticationPrincipal Jwt jwt, @PathVariable String name) {
+        UserGetByNameQuery userGetByNameQuery = UserGetByNameQuery
+                .builder()
+                .login(name)
+                .build();
+        return queryGateway.query(userGetByNameQuery, UserDTO.class).join();
     }
 }
