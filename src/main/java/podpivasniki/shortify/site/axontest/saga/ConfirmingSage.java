@@ -48,7 +48,8 @@ public class ConfirmingSage {
         } catch (Exception e) {
             cancelRegistration(event.getLogin());
         }
-    }
+        }
+
 
     private void cancelRegistration(String login) {
         var deleteCommand = UserCanceledRegistrationCommand.builder().login(login).build();
