@@ -21,20 +21,12 @@ import java.time.Duration;
 
 @Saga
 @Slf4j
-
 public class ConfirmingSage {
     final static String CONFIRM_DEADLINE = "NOT_CONFIRMED";
-
-    transient  DeadlineManager deadlineManager;
-
-    transient  CommandGateway commandGateway;
-    public ConfirmingSage() {
-
-    }
-    public ConfirmingSage(DeadlineManager deadlineManager, CommandGateway commandGateway) {
-        this.deadlineManager = deadlineManager;
-        this.commandGateway = commandGateway;
-    }
+    @Autowired
+    private transient  DeadlineManager deadlineManager;
+    @Autowired
+    private transient  CommandGateway commandGateway;
 
     @StartSaga
     @SagaEventHandler(associationProperty = "login")
